@@ -9,6 +9,16 @@ const selectAll = (req, res) =>
     }
   });
 
+const addItem = (req, res) => {
+  items.addItem(req.body, (err, data) => {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.send(data);
+    }
+  });
+}
+
 const test = (req, res) => res.send('test');
 
-module.exports = {selectAll, test};
+module.exports = {selectAll, addItem, test};
