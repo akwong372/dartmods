@@ -19,6 +19,4 @@ const addItem = (req, res) => {
   });
 }
 
-const test = (req, res) => res.send('test');
-
-module.exports = {selectAll, addItem, test};
+module.exports = {selectAll, addItem};

@@ -12,6 +12,8 @@ app.get('/items', (req, res) =>
   routes.selectAll(req, res)
 );
 
-app.get('/test', (req, res) => routes.test(req, res))
+app.post('/items', (req, res) =>
+  routes.addItem(req, res)
+);
 
 module.exports = app;
