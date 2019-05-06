@@ -12,9 +12,8 @@ app.get('/items', (req, res) =>
   routes.selectAll(req, res)
 );
 
-app.get('/test', (req, res) => routes.test(req, res))
+app.post('/items', (req, res) =>
+  routes.addItem(req, res)
+);
 
-app.listen(3000, function () {
-  console.log(`listening on port 3000!`);
-});
-
+module.exports = app;

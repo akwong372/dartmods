@@ -1,6 +1,6 @@
-var {db, mongoose} = require('./index.js');
+const { db, mongoose } = require('./index.js');
 
-var itemSchema = mongoose.Schema({
+const itemSchema = mongoose.Schema({
   title: String,
   description: String,
   parts: String,
@@ -8,16 +8,34 @@ var itemSchema = mongoose.Schema({
   main: String
 });
 
-var Item = mongoose.model('Item', itemSchema);
+const Item = mongoose.model('Item', itemSchema);
 
-var selectAll = function(callback) {
-  Item.find({}, function(err, items) {
-    if(err) {
-      callback(err, null);
+const selectAll = (serverRouteFunc) => {
+  Item.find({}, (err, items) => {
+    if (err) {
+      serverRouteFunc(err, null);
     } else {
-      callback(null, items);
+      serverRouteFunc(null, items);
     }
   });
 };
 
-module.exports.selectAll = selectAll;
+const addItem = (reqData, serverRouteFunc) => {
+  const newItem = {
+    title: reqData.title,
+    description: reqData.description,
+    parts: reqData.parts,
+    tags: reqData.tags,
+    main: reqData.main
+  };
+
+  Item.create(newItem, (err, data) => {
+    if (err) {
+      serverRouteFunc(err, null);
+    } else {
+      serverRouteFunc(null, data);
+    };
+  });
+};
+
+module.exports = { selectAll, addItem };
