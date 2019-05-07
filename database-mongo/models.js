@@ -1,10 +1,11 @@
 const { db, mongoose } = require('./index.js');
 
 const itemSchema = mongoose.Schema({
+  author: String,
   title: String,
   description: String,
   parts: String,
-  tags: Array,
+  tags: { type: Array, index: true },
   main: String
 });
 
@@ -22,6 +23,7 @@ const selectAll = (serverRouteFunc) => {
 
 const addItem = (reqData, serverRouteFunc) => {
   const newItem = {
+    author: reqData.author,
     title: reqData.title,
     description: reqData.description,
     parts: reqData.parts,
