@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import List from './components/List.jsx';
+import Navbar from './components/Navbar.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -27,6 +28,7 @@ class App extends React.Component {
 
   render () {
     return (<div>
+      <Navbar/>
       <h1>Page Title</h1>
       <List items={this.state.items}/>
     </div>)
