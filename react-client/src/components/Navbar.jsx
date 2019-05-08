@@ -2,7 +2,7 @@ import React from 'react';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Navbar = () => (
+const Navbar = (props) => (
   <div>
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark" id='navbar'>
       <div className='container-fluid'>
@@ -15,8 +15,8 @@ const Navbar = () => (
           <div className='nav-item dropdown mr-sm-2 mb-sm-2'>
             <button className='btn btn-secondary dropdown-toggle nav-link' type='button' id='navbarDropdown' data-toggle='dropdown'>Order By: </button>
             <div className='dropdown-menu' id='navbarDropdownInner'>
-              <button className='dropdown-item' type='button' id='navbarDropdownItem'>New</button>
-              <button className='dropdown-item' type='button' id='navbarDropdownItem'>Likes</button>
+              <button className='dropdown-item navbarDropdownItem' type='button' id='dropdownNew'>New</button>
+              <button className='dropdown-item navbarDropdownItem' type='button' id='dropdownLikes'>Likes</button>
             </div>
           </div>
           <form className='input-group form-inline navbar-nav navbarSearch flex-row mr-sm-2 mb-sm-2'>
@@ -27,11 +27,6 @@ const Navbar = () => (
               </button>
             </div>
           </form>
-
-          {/* <form className='navbar-nav form-inline navbarSearch' id='navbarSearch'>
-            <button className='btn btn-outline-success my-2 my-sm-0'>Search</button>
-            <input className='form-control ml-sm-2' type="search" placeholder="Search Tags..."></input>
-          </form> */}
         </div>
       </div>
     </nav>
