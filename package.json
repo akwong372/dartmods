@@ -8,6 +8,11 @@
     "start": "nodemon server/server.js",
     "test": "jest"
   },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/enzymeSetup.js"
+    ]
+  },
   "author": "Alvin Kwong",
   "license": "MIT",
   "devDependencies": {
