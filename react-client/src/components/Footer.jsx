@@ -5,7 +5,7 @@ const footer = () => (
     <div className="row">
       <div className="col-md-3">
         <h6>Link Section</h6>
-        <ul>
+        <ul className='list-unstyled'>
           <li>link</li>
           <li>link</li>
           <li>link</li>
@@ -13,7 +13,7 @@ const footer = () => (
       </div>
       <div className="col-md-3">
         <h6>Link Section</h6>
-        <ul>
+        <ul className='list-unstyled'>
           <li>link</li>
           <li>link</li>
           <li>link</li>
@@ -21,17 +21,15 @@ const footer = () => (
       </div>
       <div className="col-md-3">
         <h6>Link Section</h6>
-        <ul>
+        <ul className='list-unstyled'>
           <li>link</li>
           <li>link</li>
           <li>link</li>
         </ul>
       </div>
     </div>
-    <div className="row">
-      <span className='font-weight-light font-italic'>
-        copyright text
-    </span>
+    <div className="footer-copyright text-center font-weight-light">
+      <a className='badge badge-pill badge-light' href='#'>© 2019 placeholder</a>
     </div>
   </div>
 );
