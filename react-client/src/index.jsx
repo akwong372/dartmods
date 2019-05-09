@@ -1,8 +1,10 @@
+import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Navbar from './components/Navbar.jsx';
+import Footer from './components/Footer.jsx';
 import UserSubmission from './components/UserSubmission.jsx';
 
 class App extends React.Component {
@@ -42,7 +44,10 @@ class App extends React.Component {
 
     return (<div>
       <Navbar/>
+      <h1>Page Title</h1>
+      <List items={this.state.items}/>
       {userSubs}
+      <Footer/>
     </div>)
   }
 }
