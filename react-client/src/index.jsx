@@ -32,8 +32,9 @@ class App extends React.Component {
   render () {
     let userSubs = [];
 
-    userSubs = this.state.items.map((item)=>{
+    userSubs = this.state.items.map((item, i)=>{
       return <UserSubmission
+        key={'submissionId'+i}
         author={item.author}
         title={item.title}
         description={item.description}
@@ -45,7 +46,6 @@ class App extends React.Component {
     return (<div>
       <Navbar/>
       <h1>Page Title</h1>
-      <List items={this.state.items}/>
       {userSubs}
       <Footer/>
     </div>)
