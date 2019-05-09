@@ -6,6 +6,7 @@ import $ from 'jquery';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import UserSubmission from './components/UserSubmission.jsx';
+import CreateEntry from './components/CreateEntry.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -29,25 +30,26 @@ class App extends React.Component {
     });
   }
 
-  render () {
+  render() {
     let userSubs = [];
 
-    userSubs = this.state.items.map((item, i)=>{
+    userSubs = this.state.items.map((item, i) => {
       return <UserSubmission
-        key={'submissionId'+i}
+        key={'submissionId' + i}
         author={item.author}
         title={item.title}
         description={item.description}
         parts={item.parts}
         tags={item.tags}
-        main={item.main}/>
+        main={item.main} />
     });
 
     return (<div>
-      <Navbar/>
+      <Navbar />
       <h1>Page Title</h1>
+      <CreateEntry />
       {userSubs}
-      <Footer/>
+      <Footer />
     </div>)
   }
 }
