@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
+import axios from 'axios';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import UserSubmission from './components/UserSubmission.jsx';
@@ -16,18 +17,18 @@ class App extends React.Component {
     }
   }
 
+
+
   componentDidMount() {
-    $.ajax({
-      url: '/items',
-      success: (data) => {
+    axios.get('/items')
+      .then((response) => {
         this.setState({
-          items: data
+          items: response.data
         })
-      },
-      error: (err) => {
+      })
+      .catch((err) => {
         console.log('err', err);
-      }
-    });
+      });
   }
 
   render() {

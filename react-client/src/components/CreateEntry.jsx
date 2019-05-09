@@ -43,7 +43,6 @@ const createEntry = (props) => (
                 </textarea>
               </div>
 
-
               <hr />
               <div className="submissionButtonContainer">
                 <button type="button" className="btn btn-secondary mx-sm-1" data-dismiss="modal">Cancel</button>
