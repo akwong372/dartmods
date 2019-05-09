@@ -2,7 +2,7 @@ import React from 'react';
 
 const Navbar = (props) => (
   <div>
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark" id='navbar'>
+    <nav className="navbar navbar-expand-lg navbar-light bg-light" id='navbar'>
       <div className='container-fluid'>
         <span className="navbar-brand h1" id='navbarTitle'>Page Title</span>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
