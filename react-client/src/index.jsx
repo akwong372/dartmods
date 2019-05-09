@@ -2,8 +2,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-import List from './components/List.jsx';
 import Navbar from './components/Navbar.jsx';
+import UserSubmission from './components/UserSubmission.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -28,10 +28,21 @@ class App extends React.Component {
   }
 
   render () {
+    let userSubs = [];
+
+    userSubs = this.state.items.map((item)=>{
+      return <UserSubmission
+        author={item.author}
+        title={item.title}
+        description={item.description}
+        parts={item.parts}
+        tags={item.tags}
+        main={item.main}/>
+    });
+
     return (<div>
       <Navbar/>
-      <h1>Page Title</h1>
-      <List items={this.state.items}/>
+      {userSubs}
     </div>)
   }
 }
