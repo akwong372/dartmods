@@ -3,8 +3,12 @@ import React from 'react';
 
 const userSubmission = (props) => (
   <div className='col'>
-    <div  data-toggle="modal" data-target={'#userSubmissionModal' + props.postNumber}>
-      <div>{props.title}</div>
+    <div data-toggle="modal" data-target={'#userSubmissionModal' + props.postNumber}>
+      <div>
+        <h4>
+          {props.title}
+        </h4>
+      </div>
     </div>
 
     <div className='modal fade container-fluid' id={'userSubmissionModal' + props.postNumber} tabIndex='-1' role='dialog'>
