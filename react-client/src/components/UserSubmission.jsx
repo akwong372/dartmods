@@ -16,7 +16,7 @@ const userSubmission = (props) => (
           </div>
           <div className="modal-body">
             <div>Likes: {props.likes}</div>
-            <div>Date: {props.date}</div>
+            <div>Date: {new Date(Date.parse(props.date)).toDateString()}</div>
             <div>Description: {props.description}</div>
             <div>Parts: {props.parts}</div>
             <div>Tags: {props.tags}</div>
