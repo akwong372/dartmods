@@ -9,7 +9,7 @@ const createEntry = (props) => (
         </div>
 
         <div className="modal-body">
-          <form className='px-sm-1' action="">
+          <form className='px-sm-1' action="" onSubmit={(e)=>{e.persist(); props.createEntry(e)}}>
             <div className="container-fluid" id='formContainer'>
 
               <div className="col formElement" id='titleContainer'>

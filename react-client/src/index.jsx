@@ -15,9 +15,26 @@ class App extends React.Component {
     this.state = {
       items: []
     }
+    this.createEntry = this.createEntry.bind(this);
   }
 
+  createEntry (e) {
+    e.preventDefault();
+    console.log(e)
+    const createdEntry = {
+      author: 'guest',
+      title: JSON.stringify(e.target[0].value),
+      description: JSON.stringify(e.target[1].value),
+      parts: JSON.stringify(e.target[2].value),
+      tags: JSON.stringify(e.target[3].value).replace(/["]+/g, '').split(' '),
+      main: JSON.stringify(e.target[4].value)
+    }
+    console.log(createdEntry)
+    // axios.post('/items', createdEntry)
+    // .then(()=>{
 
+    // })
+  }
 
   componentDidMount() {
     axios.get('/items')
@@ -48,7 +65,7 @@ class App extends React.Component {
     return (<div>
       <Navbar />
       <h1>Page Title</h1>
-      <CreateEntry />
+      <CreateEntry createEntry={this.createEntry} />
       {userSubs}
       <Footer />
     </div>)
