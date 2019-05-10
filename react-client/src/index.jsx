@@ -18,6 +18,18 @@ class App extends React.Component {
     this.createEntry = this.createEntry.bind(this);
   }
 
+  getAll () {
+    axios.get('/items')
+    .then((response) => {
+      this.setState({
+        items: response.data
+      })
+    })
+    .catch((err) => {
+      console.log('err', err);
+    });
+  }
+
   createEntry (e) {
     e.preventDefault();
     console.log(e)
@@ -30,22 +42,15 @@ class App extends React.Component {
       main: JSON.stringify(e.target[4].value)
     }
     console.log(createdEntry)
-    // axios.post('/items', createdEntry)
-    // .then(()=>{
-
-    // })
+    axios.post('/items', createdEntry)
+    .then((response)=>{
+      console.log(response);
+      this.getAll();
+    })
   }
 
   componentDidMount() {
-    axios.get('/items')
-      .then((response) => {
-        this.setState({
-          items: response.data
-        })
-      })
-      .catch((err) => {
-        console.log('err', err);
-      });
+    this.getAll();
   }
 
   render() {
