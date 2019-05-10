@@ -25,6 +25,9 @@ const Navbar = (props) => (
               </button>
             </div>
           </form>
+          <button type='button' className='btn btn-success mr-sm-2 mb-sm-2' data-toggle="modal" data-target="#createEntryModal">
+            Create
+          </button>
         </div>
       </div>
     </nav>
