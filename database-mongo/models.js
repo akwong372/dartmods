@@ -2,6 +2,8 @@ const { db, mongoose } = require('./index.js');
 
 const itemSchema = mongoose.Schema({
   author: String,
+  date: { type: Date, default: Date.now },
+  likes: { type: Number, default: 0 },
   title: String,
   description: String,
   parts: String,

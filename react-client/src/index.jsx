@@ -55,6 +55,8 @@ class App extends React.Component {
       return <UserSubmission
         key={'submissionId' + i}
         author={item.author}
+        likes={item.likes}
+        date={item.date}
         title={item.title}
         description={item.description}
         parts={item.parts}
