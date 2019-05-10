@@ -8,6 +8,7 @@ import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import UserSubmission from './components/UserSubmission.jsx';
 import CreateEntry from './components/CreateEntry.jsx';
+import { typeParameterInstantiation } from '@babel/types';
 
 class App extends React.Component {
   constructor(props) {
@@ -18,19 +19,19 @@ class App extends React.Component {
     this.createEntry = this.createEntry.bind(this);
   }
 
-  getAll () {
+  getAll() {
     axios.get('/items')
-    .then((response) => {
-      this.setState({
-        items: response.data
+      .then((response) => {
+        this.setState({
+          items: response.data
+        })
       })
-    })
-    .catch((err) => {
-      console.log('err', err);
-    });
+      .catch((err) => {
+        console.log('err', err);
+      });
   }
 
-  createEntry (e) {
+  createEntry(e) {
     e.preventDefault();
     console.log(e)
     const createdEntry = {
@@ -43,10 +44,10 @@ class App extends React.Component {
     }
     console.log(createdEntry)
     axios.post('/items', createdEntry)
-    .then((response)=>{
-      console.log(response);
-      this.getAll();
-    })
+      .then((response) => {
+        console.log(response);
+        this.getAll();
+      })
   }
 
   componentDidMount() {
@@ -55,10 +56,13 @@ class App extends React.Component {
 
   render() {
     let userSubs = [];
+    let userSubsRows = [];
+    let tempRow = [];
 
     userSubs = this.state.items.map((item, i) => {
       return <UserSubmission
         key={'submissionId' + i}
+        postNumber={i}
         author={item.author}
         likes={item.likes}
         date={item.date}
@@ -69,11 +73,24 @@ class App extends React.Component {
         main={item.main} />
     });
 
+    for (var i = 0; i < userSubs.length; i++) {
+      tempRow.push(userSubs[i]);
+      if (tempRow.length === 4) {
+        userSubsRows.push(<div key={'rowId'+userSubs[i].props.postNumber} className='row'>{tempRow}</div>);
+        tempRow = [];
+      } else if (i === (userSubs.length - 1)) {
+        userSubsRows.push(<div key={'rowId'+userSubs[i].props.postNumber} className='row'>{tempRow}</div>);
+        tempRow = [];
+      }
+    }
+
     return (<div>
       <Navbar />
       <h1>Page Title</h1>
       <CreateEntry createEntry={this.createEntry} />
-      {userSubs}
+      <div className="container-fluid">
+          {userSubsRows}
+      </div>
       <Footer />
     </div>)
   }
