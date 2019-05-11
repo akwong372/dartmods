@@ -14,7 +14,7 @@ const Navbar = (props) => (
             <button className='btn btn-secondary dropdown-toggle nav-link' type='button' id='navbarDropdown' data-toggle='dropdown'>Order By: </button>
             <div className='dropdown-menu' id='navbarDropdownInner'>
               <button className='dropdown-item navbarDropdownItem' type='button' id='dropdownNew' onClick={props.sortByDate}>New</button>
-              <button className='dropdown-item navbarDropdownItem' type='button' id='dropdownLikes'>Likes</button>
+              <button className='dropdown-item navbarDropdownItem' type='button' id='dropdownLikes' onClick={props.sortByLikes}>Likes</button>
             </div>
           </div>
           <form className='input-group form-inline navbar-nav navbarSearch flex-row mr-sm-2 mb-sm-2'>

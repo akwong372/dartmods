@@ -18,6 +18,7 @@ class App extends React.Component {
     }
     this.createEntry = this.createEntry.bind(this);
     this.sortByDate = this.sortByDate.bind(this);
+    this.sortByLikes = this.sortByLikes.bind(this);
   }
 
   getAll() {
@@ -68,9 +69,24 @@ class App extends React.Component {
     }
   };
 
-  // sortByLikes() {
+  sortByLikes() {
+    let sortedItems = [];
+    if (this.state.sort === 'like') {
+      sortedItems = this.state.items.sort((a, b) => a.likes - b.likes)
 
-  // }
+      this.setState({
+        items: sortedItems,
+        sort: 'likeReverse'
+      });
+    } else {
+      sortedItems = this.state.items.sort((a, b) => b.likes - a.likes)
+
+      this.setState({
+        items: sortedItems,
+        sort: 'like'
+      });
+    }
+  }
 
   componentDidMount() {
     this.getAll();
@@ -107,7 +123,7 @@ class App extends React.Component {
     // }
 
     return (<div>
-      <Navbar sortByDate={this.sortByDate} />
+      <Navbar sortByDate={this.sortByDate} sortByLikes={this.sortByLikes} />
       <h1>Page Title</h1>
       <CreateEntry createEntry={this.createEntry} />
       <div className="row">
