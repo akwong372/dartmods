@@ -5,3 +5,12 @@
 .formElement {
   margin-bottom: 1em;
 }
+
+.mainText {
+  white-space: pre-wrap;
+}
+
+.footerContainer {
+  position: absolute;
+  bottom: 0;
+}

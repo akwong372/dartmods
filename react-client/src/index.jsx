@@ -32,8 +32,6 @@ class App extends React.Component {
   };
 
   createEntry(e) {
-    e.preventDefault();
-    console.log(e)
     const createdEntry = {
       author: 'guest',
       title: JSON.stringify(e.target[0].value),
@@ -41,13 +39,13 @@ class App extends React.Component {
       parts: JSON.stringify(e.target[2].value),
       tags: JSON.stringify(e.target[3].value).replace(/["]+/g, '').split(' '),
       main: JSON.stringify(e.target[4].value)
-    }
-    console.log(createdEntry)
+    };
+
     axios.post('/items', createdEntry)
       .then((response) => {
         console.log(response);
         this.getAll();
-      })
+      });
   };
 
   sortByDate() {
@@ -65,7 +63,7 @@ class App extends React.Component {
   render() {
     let userSubs = [];
     let userSubsRows = [];
-    let tempRow = [];
+    // let tempRow = [];
 
     userSubs = this.state.items.map((item, i) => {
       return <UserSubmission
@@ -81,23 +79,23 @@ class App extends React.Component {
         main={item.main} />
     });
 
-    for (var i = 0; i < userSubs.length; i++) {
-      tempRow.push(userSubs[i]);
-      if (tempRow.length === 4) {
-        userSubsRows.push(<div key={'rowId' + userSubs[i].props.postNumber} className='row'>{tempRow}</div>);
-        tempRow = [];
-      } else if (i === (userSubs.length - 1)) {
-        userSubsRows.push(<div key={'rowId' + userSubs[i].props.postNumber} className='row'>{tempRow}</div>);
-        tempRow = [];
-      }
-    }
+    // for (var i = 0; i < userSubs.length; i++) {
+    //   tempRow.push(userSubs[i]);
+    //   if (tempRow.length === 4) {
+    //     userSubsRows.push(<div key={'rowId' + userSubs[i].props.postNumber} className='row'>{tempRow}</div>);
+    //     tempRow = [];
+    //   } else if (i === (userSubs.length - 1)) {
+    //     userSubsRows.push(<div key={'rowId' + userSubs[i].props.postNumber} className='row'>{tempRow}</div>);
+    //     tempRow = [];
+    //   }
+    // }
 
     return (<div>
       <Navbar sortByDate={this.sortByDate} />
       <h1>Page Title</h1>
       <CreateEntry createEntry={this.createEntry} />
-      <div className="container-fluid">
-        {userSubsRows}
+      <div className="row">
+        {userSubs}
       </div>
       <Footer />
     </div>);
