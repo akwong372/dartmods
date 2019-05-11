@@ -24,14 +24,29 @@ const selectAll = (serverRouteFunc) => {
 };
 
 const addItem = (reqData, serverRouteFunc) => {
-  const newItem = {
-    author: reqData.author,
-    title: reqData.title,
-    description: reqData.description,
-    parts: reqData.parts,
-    tags: reqData.tags,
-    main: reqData.main
-  };
+
+  let newItem = {};
+  if (reqData.date !== undefined) {
+    newItem = {
+      author: reqData.author,
+      date: reqData.date,
+      title: reqData.title,
+      description: reqData.description,
+      parts: reqData.parts,
+      tags: reqData.tags,
+      main: reqData.main
+    };
+  } else {
+    newItem = {
+      author: reqData.author,
+      title: reqData.title,
+      description: reqData.description,
+      parts: reqData.parts,
+      tags: reqData.tags,
+      main: reqData.main
+    };
+  }
+
 
   Item.create(newItem, (err, data) => {
     if (err) {

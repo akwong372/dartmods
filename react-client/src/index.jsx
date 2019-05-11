@@ -8,7 +8,6 @@ import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import UserSubmission from './components/UserSubmission.jsx';
 import CreateEntry from './components/CreateEntry.jsx';
-import { typeParameterInstantiation } from '@babel/types';
 
 class App extends React.Component {
   constructor(props) {
@@ -17,6 +16,7 @@ class App extends React.Component {
       items: []
     }
     this.createEntry = this.createEntry.bind(this);
+    this.sortByDate = this.sortByDate.bind(this);
   }
 
   getAll() {
@@ -29,7 +29,7 @@ class App extends React.Component {
       .catch((err) => {
         console.log('err', err);
       });
-  }
+  };
 
   createEntry(e) {
     e.preventDefault();
@@ -48,11 +48,19 @@ class App extends React.Component {
         console.log(response);
         this.getAll();
       })
-  }
+  };
+
+  sortByDate() {
+    const sortedItems = this.state.items.sort((a, b) => new Date(b.date) - new Date(a.date))
+    console.log(sortedItems)
+    this.setState({
+      items: sortedItems
+    });
+  };
 
   componentDidMount() {
     this.getAll();
-  }
+  };
 
   render() {
     let userSubs = [];
@@ -76,24 +84,24 @@ class App extends React.Component {
     for (var i = 0; i < userSubs.length; i++) {
       tempRow.push(userSubs[i]);
       if (tempRow.length === 4) {
-        userSubsRows.push(<div key={'rowId'+userSubs[i].props.postNumber} className='row'>{tempRow}</div>);
+        userSubsRows.push(<div key={'rowId' + userSubs[i].props.postNumber} className='row'>{tempRow}</div>);
         tempRow = [];
       } else if (i === (userSubs.length - 1)) {
-        userSubsRows.push(<div key={'rowId'+userSubs[i].props.postNumber} className='row'>{tempRow}</div>);
+        userSubsRows.push(<div key={'rowId' + userSubs[i].props.postNumber} className='row'>{tempRow}</div>);
         tempRow = [];
       }
     }
 
     return (<div>
-      <Navbar />
+      <Navbar sortByDate={this.sortByDate} />
       <h1>Page Title</h1>
       <CreateEntry createEntry={this.createEntry} />
       <div className="container-fluid">
-          {userSubsRows}
+        {userSubsRows}
       </div>
       <Footer />
-    </div>)
-  }
-}
+    </div>);
+  };
+};
 
 ReactDOM.render(<App />, document.getElementById('app'));

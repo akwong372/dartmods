@@ -13,7 +13,7 @@ const Navbar = (props) => (
           <div className='nav-item dropdown mr-sm-2 mb-sm-2'>
             <button className='btn btn-secondary dropdown-toggle nav-link' type='button' id='navbarDropdown' data-toggle='dropdown'>Order By: </button>
             <div className='dropdown-menu' id='navbarDropdownInner'>
-              <button className='dropdown-item navbarDropdownItem' type='button' id='dropdownNew'>New</button>
+              <button className='dropdown-item navbarDropdownItem' type='button' id='dropdownNew' onClick={props.sortByDate}>New</button>
               <button className='dropdown-item navbarDropdownItem' type='button' id='dropdownLikes'>Likes</button>
             </div>
           </div>
