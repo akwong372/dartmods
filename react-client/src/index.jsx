@@ -13,7 +13,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: []
+      items: [],
+      sort: ''
     }
     this.createEntry = this.createEntry.bind(this);
     this.sortByDate = this.sortByDate.bind(this);
@@ -49,12 +50,27 @@ class App extends React.Component {
   };
 
   sortByDate() {
-    const sortedItems = this.state.items.sort((a, b) => new Date(b.date) - new Date(a.date))
-    console.log(sortedItems)
-    this.setState({
-      items: sortedItems
-    });
+    let sortedItems = [];
+    if (this.state.sort === 'date') {
+      sortedItems = this.state.items.sort((a, b) => new Date(a.date) - new Date(b.date))
+
+      this.setState({
+        items: sortedItems,
+        sort: 'dateReverse'
+      });
+    } else {
+      sortedItems = this.state.items.sort((a, b) => new Date(b.date) - new Date(a.date))
+
+      this.setState({
+        items: sortedItems,
+        sort: 'date'
+      });
+    }
   };
+
+  // sortByLikes() {
+
+  // }
 
   componentDidMount() {
     this.getAll();
@@ -62,7 +78,7 @@ class App extends React.Component {
 
   render() {
     let userSubs = [];
-    let userSubsRows = [];
+    // let userSubsRows = [];
     // let tempRow = [];
 
     userSubs = this.state.items.map((item, i) => {
