@@ -1,40 +1,44 @@
 import React from 'react';
-// import UserSubmissionModal from './UserSubmissionModal.jsx';
+import UserSubmissionModal from './UserSubmissionModal.jsx';
 
-const userSubmission = (props) => (
-  <div className='col-md-3'>
-    <div data-toggle="modal" data-target={'#userSubmissionModal' + props.postNumber}>
-      <div>
-        <h4>
-          {JSON.parse(props.title)}
-        </h4>
+const userSubmission = (props) => {
+
+  const postDate = new Date(Date.parse(props.date));
+  const dateNumber = postDate.getDate();
+  const monthNumber = postDate.getMonth() + 1
+  const postDateDate = dateNumber > 9 ? dateNumber : '0' + dateNumber;
+  const postDateMonth = monthNumber > 9 ? monthNumber : '0' + monthNumber;
+
+  return (
+    <div className='col-md-3 my-sm-2 userSubmissionContainer'>
+      <div data-toggle="modal" data-target={'#userSubmissionModal' + props.postNumber}>
         <div className='container'>
-          <div>Likes: {props.likes}</div>
-          <div>Date: {new Date(Date.parse(props.date)).toDateString()}</div>
-          <div>Description: {JSON.parse(props.description)}</div>
-        </div>
-      </div>
-    </div>
-
-    <div className='modal fade container-fluid' id={'userSubmissionModal' + props.postNumber} tabIndex='-1' role='dialog'>
-      <div className='modal-dialog modal-dialog-centered modal-lg'>
-        <div className="modal-content">
-          <div className="modal-header">
-            <h4 className='modal-title'>{JSON.parse(props.title)}</h4>
-            <h5>Author: {props.author}</h5>
-          </div>
-          <div className="modal-body">
-            <div>Likes: {props.likes}</div>
-            <div>Date: {new Date(Date.parse(props.date)).toDateString()}</div>
+          <h4>
+            {JSON.parse(props.title)}
+          </h4>
+          <div>
+            <div className='row'>
+              <div className='col'>Likes: {props.likes}</div>
+              <div className='col'>{`${postDate.getFullYear()}/${postDateMonth}/${postDateDate}`}</div>
+            </div>
             <div>Description: {JSON.parse(props.description)}</div>
-            <div>Parts: {JSON.parse(props.parts)}</div>
-            <div>Tags: {props.tags.join(', ')}</div>
-            <div className='mainText'>Main: {JSON.parse(props.main)}</div>
           </div>
         </div>
       </div>
+
+      <UserSubmissionModal
+        postNumber={props.postNumber}
+        author={props.author}
+        likes={props.likes}
+        date={props.date}
+        title={props.title}
+        description={props.description}
+        parts={props.parts}
+        tags={props.tags}
+        main={props.main}
+      />
     </div>
-  </div >
-);
+  );
+};
 
 export default userSubmission;
