@@ -13,26 +13,27 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: []
+      items: [],
+      sort: ''
     }
     this.createEntry = this.createEntry.bind(this);
+    this.sortByDate = this.sortByDate.bind(this);
+    this.sortByLikes = this.sortByLikes.bind(this);
   }
 
-  getAll () {
+  getAll() {
     axios.get('/items')
-    .then((response) => {
-      this.setState({
-        items: response.data
+      .then((response) => {
+        this.setState({
+          items: response.data
+        })
       })
-    })
-    .catch((err) => {
-      console.log('err', err);
-    });
-  }
+      .catch((err) => {
+        console.log('err', err);
+      });
+  };
 
-  createEntry (e) {
-    e.preventDefault();
-    console.log(e)
+  createEntry(e) {
     const createdEntry = {
       author: 'guest',
       title: JSON.stringify(e.target[0].value),
@@ -40,25 +41,66 @@ class App extends React.Component {
       parts: JSON.stringify(e.target[2].value),
       tags: JSON.stringify(e.target[3].value).replace(/["]+/g, '').split(' '),
       main: JSON.stringify(e.target[4].value)
-    }
-    console.log(createdEntry)
+    };
+
     axios.post('/items', createdEntry)
-    .then((response)=>{
-      console.log(response);
-      this.getAll();
-    })
+      .then((response) => {
+        console.log(response);
+        this.getAll();
+      });
+  };
+
+  sortByDate() {
+    let sortedItems = [];
+    if (this.state.sort === 'date') {
+      sortedItems = this.state.items.sort((a, b) => new Date(a.date) - new Date(b.date))
+
+      this.setState({
+        items: sortedItems,
+        sort: 'dateReverse'
+      });
+    } else {
+      sortedItems = this.state.items.sort((a, b) => new Date(b.date) - new Date(a.date))
+
+      this.setState({
+        items: sortedItems,
+        sort: 'date'
+      });
+    }
+  };
+
+  sortByLikes() {
+    let sortedItems = [];
+    if (this.state.sort === 'like') {
+      sortedItems = this.state.items.sort((a, b) => a.likes - b.likes)
+
+      this.setState({
+        items: sortedItems,
+        sort: 'likeReverse'
+      });
+    } else {
+      sortedItems = this.state.items.sort((a, b) => b.likes - a.likes)
+
+      this.setState({
+        items: sortedItems,
+        sort: 'like'
+      });
+    }
   }
 
   componentDidMount() {
     this.getAll();
-  }
+  };
 
   render() {
     let userSubs = [];
+    // let userSubsRows = [];
+    // let tempRow = [];
 
     userSubs = this.state.items.map((item, i) => {
       return <UserSubmission
         key={'submissionId' + i}
+        postNumber={i}
         author={item.author}
         likes={item.likes}
         date={item.date}
@@ -69,14 +111,27 @@ class App extends React.Component {
         main={item.main} />
     });
 
+    // for (var i = 0; i < userSubs.length; i++) {
+    //   tempRow.push(userSubs[i]);
+    //   if (tempRow.length === 4) {
+    //     userSubsRows.push(<div key={'rowId' + userSubs[i].props.postNumber} className='row'>{tempRow}</div>);
+    //     tempRow = [];
+    //   } else if (i === (userSubs.length - 1)) {
+    //     userSubsRows.push(<div key={'rowId' + userSubs[i].props.postNumber} className='row'>{tempRow}</div>);
+    //     tempRow = [];
+    //   }
+    // }
+
     return (<div>
-      <Navbar />
+      <Navbar sortByDate={this.sortByDate} sortByLikes={this.sortByLikes} />
       <h1>Page Title</h1>
       <CreateEntry createEntry={this.createEntry} />
-      {userSubs}
+      <div className="row">
+        {userSubs}
+      </div>
       <Footer />
-    </div>)
-  }
-}
+    </div>);
+  };
+};
 
 ReactDOM.render(<App />, document.getElementById('app'));
