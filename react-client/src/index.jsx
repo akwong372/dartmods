@@ -19,6 +19,7 @@ class App extends React.Component {
     this.createEntry = this.createEntry.bind(this);
     this.sortByDate = this.sortByDate.bind(this);
     this.sortByLikes = this.sortByLikes.bind(this);
+    this.sortByTags = this.sortByTags.bind(this);
   }
 
   getAll() {
@@ -88,14 +89,17 @@ class App extends React.Component {
     }
   }
 
+  sortByTags(e) {
+    e.preventDefault();
+    console.log(e.target[0].value)
+  }
+
   componentDidMount() {
     this.getAll();
   };
 
   render() {
     let userSubs = [];
-    // let userSubsRows = [];
-    // let tempRow = [];
 
     userSubs = this.state.items.map((item, i) => {
       return <UserSubmission
@@ -111,19 +115,8 @@ class App extends React.Component {
         main={item.main} />
     });
 
-    // for (var i = 0; i < userSubs.length; i++) {
-    //   tempRow.push(userSubs[i]);
-    //   if (tempRow.length === 4) {
-    //     userSubsRows.push(<div key={'rowId' + userSubs[i].props.postNumber} className='row'>{tempRow}</div>);
-    //     tempRow = [];
-    //   } else if (i === (userSubs.length - 1)) {
-    //     userSubsRows.push(<div key={'rowId' + userSubs[i].props.postNumber} className='row'>{tempRow}</div>);
-    //     tempRow = [];
-    //   }
-    // }
-
     return (<div>
-      <Navbar sortByDate={this.sortByDate} sortByLikes={this.sortByLikes} />
+      <Navbar sortByDate={this.sortByDate} sortByLikes={this.sortByLikes} sortByTags={this.sortByTags}/>
       <h1>Page Title</h1>
       <CreateEntry createEntry={this.createEntry} />
       <div className="row">

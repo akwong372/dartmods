@@ -18,7 +18,7 @@ const Navbar = (props) => (
               <button className='dropdown-item navbarDropdownItem' type='button' id='dropdownLikes' onClick={props.sortByLikes}>Likes</button>
             </div>
           </div>
-          <SearchBar />
+          <SearchBar sortByTags={props.sortByTags}/>
           <button type='button' className='btn btn-success mr-sm-2 mb-sm-2' data-toggle="modal" data-target="#createEntryModal">
             Create
           </button>
