@@ -14,6 +14,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       items: [],
+      filteredItems: [],
       sort: ''
     }
     this.createEntry = this.createEntry.bind(this);
@@ -91,8 +92,20 @@ class App extends React.Component {
 
   sortByTags(e) {
     e.preventDefault();
-    console.log(e.target[0].value)
-  }
+    const searchedTag = e.target[0].value;
+
+    if (searchedTag.length > 0) {
+      const filteredItems = this.state.items.filter((item) => item.tags.indexOf(searchedTag) > -1);
+      this.setState({
+        filteredItems: filteredItems,
+        sort: 'tags'
+      });
+    } else {
+      this.setState({
+        sort: ''
+      });
+    }
+  };
 
   componentDidMount() {
     this.getAll();
@@ -101,22 +114,38 @@ class App extends React.Component {
   render() {
     let userSubs = [];
 
-    userSubs = this.state.items.map((item, i) => {
-      return <UserSubmission
-        key={'submissionId' + i}
-        postNumber={i}
-        author={item.author}
-        likes={item.likes}
-        date={item.date}
-        title={item.title}
-        description={item.description}
-        parts={item.parts}
-        tags={item.tags}
-        main={item.main} />
-    });
+    if (this.state.sort === 'tags') {
+      userSubs = this.state.filteredItems.map((item, i) => {
+        return <UserSubmission
+          key={'submissionIdFiltered' + i}
+          postNumber={i}
+          author={item.author}
+          likes={item.likes}
+          date={item.date}
+          title={item.title}
+          description={item.description}
+          parts={item.parts}
+          tags={item.tags}
+          main={item.main} />
+      });
+    } else {
+      userSubs = this.state.items.map((item, i) => {
+        return <UserSubmission
+          key={'submissionId' + i}
+          postNumber={i}
+          author={item.author}
+          likes={item.likes}
+          date={item.date}
+          title={item.title}
+          description={item.description}
+          parts={item.parts}
+          tags={item.tags}
+          main={item.main} />
+      });
+    }
 
     return (<div>
-      <Navbar sortByDate={this.sortByDate} sortByLikes={this.sortByLikes} sortByTags={this.sortByTags}/>
+      <Navbar sortByDate={this.sortByDate} sortByLikes={this.sortByLikes} sortByTags={this.sortByTags} />
       <h1>Page Title</h1>
       <CreateEntry createEntry={this.createEntry} />
       <div className="row">
