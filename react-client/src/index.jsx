@@ -8,6 +8,7 @@ import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import UserSubmission from './components/UserSubmission.jsx';
 import CreateEntry from './components/CreateEntry.jsx';
+import AlertBar from './components/AlertBar.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -96,6 +97,11 @@ class App extends React.Component {
 
     if (searchedTag.length > 0) {
       const filteredItems = this.state.items.filter((item) => item.tags.indexOf(searchedTag) > -1);
+      if (filteredItems.length < 1) {
+        const message = `No results found for ${searchedTag}.`;
+        console.log(document.getElementById('alertContainer'))
+        document.getElementById('alertContainer').appendChild(<AlertBar status={"warning"} message={message} />);
+      }
       this.setState({
         filteredItems: filteredItems,
         sort: 'tags'
@@ -147,6 +153,7 @@ class App extends React.Component {
     return (<div>
       <Navbar sortByDate={this.sortByDate} sortByLikes={this.sortByLikes} sortByTags={this.sortByTags} />
       <h1>Page Title</h1>
+      <div id='alertContainer'></div>
       <CreateEntry createEntry={this.createEntry} />
       <div className="row">
         {userSubs}
