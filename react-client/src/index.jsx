@@ -16,12 +16,15 @@ class App extends React.Component {
     this.state = {
       items: [],
       filteredItems: [],
+      alertMessage: '',
+      alertStatus: '',
       sort: ''
     }
     this.createEntry = this.createEntry.bind(this);
     this.sortByDate = this.sortByDate.bind(this);
     this.sortByLikes = this.sortByLikes.bind(this);
     this.sortByTags = this.sortByTags.bind(this);
+    this.alertDismiss = this.alertDismiss.bind(this);
   }
 
   getAll() {
@@ -98,9 +101,10 @@ class App extends React.Component {
     if (searchedTag.length > 0) {
       const filteredItems = this.state.items.filter((item) => item.tags.indexOf(searchedTag) > -1);
       if (filteredItems.length < 1) {
-        const message = `No results found for ${searchedTag}.`;
-        console.log(document.getElementById('alertContainer'))
-        document.getElementById('alertContainer').appendChild(<AlertBar status={"warning"} message={message} />);
+        this.setState({
+          alertMessage: `No results found for "${searchedTag}".`,
+          alertStatus: 'warning'
+        });
       }
       this.setState({
         filteredItems: filteredItems,
@@ -111,7 +115,15 @@ class App extends React.Component {
         sort: ''
       });
     }
+    e.target[0].value = '';
   };
+
+  alertDismiss() {
+    this.setState({
+      alertMessage: '',
+      alertStatus: ''
+    })
+  }
 
   componentDidMount() {
     this.getAll();
@@ -119,6 +131,14 @@ class App extends React.Component {
 
   render() {
     let userSubs = [];
+    let alertBar = '';
+
+    if (this.state.alertMessage !== '') {
+      alertBar = <AlertBar
+        status={this.state.alertStatus}
+        message={this.state.alertMessage}
+        alertDismiss={this.alertDismiss}  />;
+    }
 
     if (this.state.sort === 'tags') {
       userSubs = this.state.filteredItems.map((item, i) => {
@@ -153,7 +173,7 @@ class App extends React.Component {
     return (<div>
       <Navbar sortByDate={this.sortByDate} sortByLikes={this.sortByLikes} sortByTags={this.sortByTags} />
       <h1>Page Title</h1>
-      <div id='alertContainer'></div>
+      {alertBar}
       <CreateEntry createEntry={this.createEntry} />
       <div className="row">
         {userSubs}
