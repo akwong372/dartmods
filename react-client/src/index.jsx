@@ -8,17 +8,23 @@ import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import UserSubmission from './components/UserSubmission.jsx';
 import CreateEntry from './components/CreateEntry.jsx';
+import AlertBar from './components/AlertBar.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       items: [],
+      filteredItems: [],
+      alertMessage: '',
+      alertStatus: '',
       sort: ''
     }
     this.createEntry = this.createEntry.bind(this);
     this.sortByDate = this.sortByDate.bind(this);
     this.sortByLikes = this.sortByLikes.bind(this);
+    this.sortByTags = this.sortByTags.bind(this);
+    this.alertDismiss = this.alertDismiss.bind(this);
   }
 
   getAll() {
@@ -88,43 +94,86 @@ class App extends React.Component {
     }
   }
 
+  sortByTags(e) {
+    e.preventDefault();
+    const searchedTag = e.target[0].value;
+
+    if (searchedTag.length > 0) {
+      const filteredItems = this.state.items.filter((item) => item.tags.indexOf(searchedTag) > -1);
+      if (filteredItems.length < 1) {
+        this.setState({
+          alertMessage: `No results found for "${searchedTag}".`,
+          alertStatus: 'warning'
+        });
+      }
+      this.setState({
+        filteredItems: filteredItems,
+        sort: 'tags'
+      });
+    } else {
+      this.setState({
+        sort: ''
+      });
+    }
+    e.target[0].value = '';
+  };
+
+  alertDismiss() {
+    this.setState({
+      alertMessage: '',
+      alertStatus: ''
+    })
+  }
+
   componentDidMount() {
     this.getAll();
   };
 
   render() {
     let userSubs = [];
-    // let userSubsRows = [];
-    // let tempRow = [];
+    let alertBar = '';
 
-    userSubs = this.state.items.map((item, i) => {
-      return <UserSubmission
-        key={'submissionId' + i}
-        postNumber={i}
-        author={item.author}
-        likes={item.likes}
-        date={item.date}
-        title={item.title}
-        description={item.description}
-        parts={item.parts}
-        tags={item.tags}
-        main={item.main} />
-    });
+    if (this.state.alertMessage !== '') {
+      alertBar = <AlertBar
+        status={this.state.alertStatus}
+        message={this.state.alertMessage}
+        alertDismiss={this.alertDismiss}  />;
+    }
 
-    // for (var i = 0; i < userSubs.length; i++) {
-    //   tempRow.push(userSubs[i]);
-    //   if (tempRow.length === 4) {
-    //     userSubsRows.push(<div key={'rowId' + userSubs[i].props.postNumber} className='row'>{tempRow}</div>);
-    //     tempRow = [];
-    //   } else if (i === (userSubs.length - 1)) {
-    //     userSubsRows.push(<div key={'rowId' + userSubs[i].props.postNumber} className='row'>{tempRow}</div>);
-    //     tempRow = [];
-    //   }
-    // }
+    if (this.state.sort === 'tags') {
+      userSubs = this.state.filteredItems.map((item, i) => {
+        return <UserSubmission
+          key={'submissionIdFiltered' + i}
+          postNumber={i}
+          author={item.author}
+          likes={item.likes}
+          date={item.date}
+          title={item.title}
+          description={item.description}
+          parts={item.parts}
+          tags={item.tags}
+          main={item.main} />
+      });
+    } else {
+      userSubs = this.state.items.map((item, i) => {
+        return <UserSubmission
+          key={'submissionId' + i}
+          postNumber={i}
+          author={item.author}
+          likes={item.likes}
+          date={item.date}
+          title={item.title}
+          description={item.description}
+          parts={item.parts}
+          tags={item.tags}
+          main={item.main} />
+      });
+    }
 
     return (<div>
-      <Navbar sortByDate={this.sortByDate} sortByLikes={this.sortByLikes} />
+      <Navbar sortByDate={this.sortByDate} sortByLikes={this.sortByLikes} sortByTags={this.sortByTags} />
       <h1>Page Title</h1>
+      {alertBar}
       <CreateEntry createEntry={this.createEntry} />
       <div className="row">
         {userSubs}

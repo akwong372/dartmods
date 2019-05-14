@@ -1,4 +1,5 @@
 import React from 'react';
+import SearchBar from './SearchBar.jsx';
 
 const Navbar = (props) => (
   <div>
@@ -17,14 +18,7 @@ const Navbar = (props) => (
               <button className='dropdown-item navbarDropdownItem' type='button' id='dropdownLikes' onClick={props.sortByLikes}>Likes</button>
             </div>
           </div>
-          <form className='input-group form-inline navbar-nav navbarSearch flex-row mr-sm-2 mb-sm-2'>
-            <input className='form-control' type='search' placeholder='Search Tags...'></input>
-            <div className='input-group-append'>
-              <button className='btn btn-secondary' type='button'>
-                <i className="fas fa-search"></i>
-              </button>
-            </div>
-          </form>
+          <SearchBar sortByTags={props.sortByTags}/>
           <button type='button' className='btn btn-success mr-sm-2 mb-sm-2' data-toggle="modal" data-target="#createEntryModal">
             Create
           </button>
