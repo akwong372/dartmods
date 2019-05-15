@@ -16,4 +16,8 @@ app.post('/items', (req, res) =>
   routes.addItem(req, res)
 );
 
+app.post('/items/:postId/like', (req, res) =>
+  routes.addLike(req, res)
+);
+
 module.exports = app;

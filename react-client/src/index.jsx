@@ -30,6 +30,7 @@ class App extends React.Component {
   getAll() {
     axios.get('/items')
       .then((response) => {
+        console.log(response.data);
         this.setState({
           items: response.data
         })

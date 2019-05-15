@@ -19,4 +19,14 @@ const addItem = (req, res) => {
   });
 }
 
-module.exports = {selectAll, addItem};
+const addLike = (req, res) => {
+  items.addLike(req.params, (err, data) => {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+}
+
+module.exports = {selectAll, addItem, addLike};
