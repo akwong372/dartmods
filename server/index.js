@@ -1,8 +1,19 @@
-var express = require('express');
-var routes = require('./routes.js');
-var bodyParser = require('body-parser');
+const express = require('express');
+const { db } = require('../database-mongo/index.js');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const routes = require('./routes.js');
+const bodyParser = require('body-parser');
 
-var app = express();
+const app = express();
+app.use(session({
+  secret: 'somekindofsecret',
+  // genid: req => genuuid(),
+  store: new MongoStore({ mongooseConnection: db }),
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -22,6 +33,10 @@ app.post('/items/:postId/like', (req, res) =>
 
 app.post('/users/newuser', (req, res) =>
   routes.createUser(req, res)
-)
+);
+
+app.post('/users/login', (req, res) =>
+  routes.loginUser(req, res)
+);
 
 module.exports = app;

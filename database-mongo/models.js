@@ -86,4 +86,16 @@ const createUser = (reqData, serverRouteFunc) => {
   });
 };
 
-module.exports = { selectAll, addItem, addLike, createUser };
+const loginUser = (reqData, serverRouteFunc) => {
+  User.findOne({ username: reqData.username, password: reqData.password }, (err, user) => {
+    if (err) {
+      serverRouteFunc(err, null);
+    } else if (user === null) {
+      serverRouteFunc(null, { message: 'Username or password is incorrect.' });
+    } else {
+      serverRouteFunc(null, user);
+    }
+  });
+}
+
+module.exports = { selectAll, addItem, addLike, createUser, loginUser };

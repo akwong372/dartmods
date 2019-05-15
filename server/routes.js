@@ -9,7 +9,7 @@ const selectAll = (req, res) =>
     }
   });
 
-const addItem = (req, res) => {
+const addItem = (req, res) =>
   models.addItem(req.body, (err, data) => {
     if (err) {
       res.sendStatus(500);
@@ -17,9 +17,8 @@ const addItem = (req, res) => {
       res.send(data);
     }
   });
-}
 
-const addLike = (req, res) => {
+const addLike = (req, res) =>
   models.addLike(req.params, (err, data) => {
     if (err) {
       res.sendStatus(500);
@@ -27,16 +26,24 @@ const addLike = (req, res) => {
       res.sendStatus(200);
     }
   });
-}
 
-const createUser = (req, res) => {
+const createUser = (req, res) =>
   models.createUser(req.body, (err, data) => {
     if (err) {
       res.sendStatus(500);
     } else {
       res.send(data);
     }
-  })
-}
+  });
 
-module.exports = { selectAll, addItem, addLike, createUser };
+const loginUser = (req, res) =>
+  models.loginUser(req.body, (err, data) => {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      req.session.username = data.username;
+      console.log(req.session)
+      res.send(data);
+    }
+  })
+module.exports = { selectAll, addItem, addLike, createUser, loginUser };
