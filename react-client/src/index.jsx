@@ -25,12 +25,12 @@ class App extends React.Component {
     this.sortByLikes = this.sortByLikes.bind(this);
     this.sortByTags = this.sortByTags.bind(this);
     this.alertDismiss = this.alertDismiss.bind(this);
+    this.addLike = this.addLike.bind(this);
   }
 
   getAll() {
     axios.get('/items')
       .then((response) => {
-        console.log(response.data);
         this.setState({
           items: response.data
         })
@@ -52,7 +52,6 @@ class App extends React.Component {
 
     axios.post('/items', createdEntry)
       .then((response) => {
-        console.log(response);
         this.getAll();
       });
   };
@@ -126,6 +125,16 @@ class App extends React.Component {
     })
   }
 
+  addLike(postId) {
+    axios.post(`/items/${postId}/like`, {})
+      .then((response) => {
+        this.getAll();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   componentDidMount() {
     this.getAll();
   };
@@ -138,13 +147,14 @@ class App extends React.Component {
       alertBar = <AlertBar
         status={this.state.alertStatus}
         message={this.state.alertMessage}
-        alertDismiss={this.alertDismiss}  />;
+        alertDismiss={this.alertDismiss} />;
     }
 
     if (this.state.sort === 'tags') {
       userSubs = this.state.filteredItems.map((item, i) => {
         return <UserSubmission
           key={'submissionIdFiltered' + i}
+          postId={item._id}
           postNumber={i}
           author={item.author}
           likes={item.likes}
@@ -153,12 +163,14 @@ class App extends React.Component {
           description={item.description}
           parts={item.parts}
           tags={item.tags}
-          main={item.main} />
+          main={item.main}
+          addLike={this.addLike} />
       });
     } else {
       userSubs = this.state.items.map((item, i) => {
         return <UserSubmission
           key={'submissionId' + i}
+          postId={item._id}
           postNumber={i}
           author={item.author}
           likes={item.likes}
@@ -167,7 +179,8 @@ class App extends React.Component {
           description={item.description}
           parts={item.parts}
           tags={item.tags}
-          main={item.main} />
+          main={item.main}
+          addLike={this.addLike} />
       });
     }
 
