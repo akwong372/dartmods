@@ -28,6 +28,7 @@ const userSubmission = (props) => {
 
       <UserSubmissionModal
         postNumber={props.postNumber}
+        postId={props.postId}
         author={props.author}
         likes={props.likes}
         date={props.date}
@@ -36,6 +37,7 @@ const userSubmission = (props) => {
         parts={props.parts}
         tags={props.tags}
         main={props.main}
+        addLike={props.addLike}
       />
     </div>
   );

@@ -24,7 +24,6 @@ const selectAll = (serverRouteFunc) => {
 };
 
 const addItem = (reqData, serverRouteFunc) => {
-
   let newItem = {};
   if (reqData.date !== undefined) {
     newItem = {
@@ -47,7 +46,6 @@ const addItem = (reqData, serverRouteFunc) => {
     };
   }
 
-
   Item.create(newItem, (err, data) => {
     if (err) {
       serverRouteFunc(err, null);
@@ -57,4 +55,14 @@ const addItem = (reqData, serverRouteFunc) => {
   });
 };
 
-module.exports = { selectAll, addItem };
+const addLike = (reqData, serverRouteFunc) => {
+  Item.findByIdAndUpdate(reqData.postId, {$inc: {likes: 1}}, {new: true}, (err, data) => {
+    if (err) {
+      serverRouteFunc(err, null);
+    } else {
+      serverRouteFunc(null, data);
+    }
+  })
+}
+
+module.exports = { selectAll, addItem, addLike };
