@@ -11,7 +11,14 @@ const itemSchema = mongoose.Schema({
   main: String
 });
 
+const userSchema = mongoose.Schema({
+  username: { type: String, unique: true },
+  password: String,
+  likedIds: { type: Array, default: [] }
+});
+
 const Item = mongoose.model('Item', itemSchema);
+const User = mongoose.model('User', userSchema);
 
 const selectAll = (serverRouteFunc) => {
   Item.find({}, (err, items) => {
@@ -56,13 +63,27 @@ const addItem = (reqData, serverRouteFunc) => {
 };
 
 const addLike = (reqData, serverRouteFunc) => {
-  Item.findByIdAndUpdate(reqData.postId, {$inc: {likes: 1}}, {new: true}, (err, data) => {
+  Item.findByIdAndUpdate(reqData.postId, { $inc: { likes: 1 } }, { new: true }, (err, data) => {
     if (err) {
       serverRouteFunc(err, null);
     } else {
       serverRouteFunc(null, data);
     }
-  })
-}
+  });
+};
 
-module.exports = { selectAll, addItem, addLike };
+const createUser = (reqData, serverRouteFunc) => {
+  User.findOne({ username: reqData.username }, (err, user) => {
+    if (err) {
+      serverRouteFunc(err, null);
+    } else if (user === null) {
+      User.create({ username: reqData.username, password: reqData.password })
+        .then((user) => serverRouteFunc(null, user))
+        .catch((err) => serverRouteFunc(err, null));
+    } else {
+      serverRouteFunc(null, { message: 'Username already exists.' });
+    }
+  });
+};
+
+module.exports = { selectAll, addItem, addLike, createUser };

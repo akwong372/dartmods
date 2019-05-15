@@ -1,7 +1,7 @@
-var items = require('../database-mongo/models.js');
+var models = require('../database-mongo/models.js');
 
 const selectAll = (req, res) =>
-  items.selectAll(function (err, data) {
+  models.selectAll(function (err, data) {
     if (err) {
       res.sendStatus(500);
     } else {
@@ -10,7 +10,7 @@ const selectAll = (req, res) =>
   });
 
 const addItem = (req, res) => {
-  items.addItem(req.body, (err, data) => {
+  models.addItem(req.body, (err, data) => {
     if (err) {
       res.sendStatus(500);
     } else {
@@ -20,7 +20,7 @@ const addItem = (req, res) => {
 }
 
 const addLike = (req, res) => {
-  items.addLike(req.params, (err, data) => {
+  models.addLike(req.params, (err, data) => {
     if (err) {
       res.sendStatus(500);
     } else {
@@ -29,4 +29,14 @@ const addLike = (req, res) => {
   });
 }
 
-module.exports = {selectAll, addItem, addLike};
+const createUser = (req, res) => {
+  models.createUser(req.body, (err, data) => {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.send(data);
+    }
+  })
+}
+
+module.exports = { selectAll, addItem, addLike, createUser };

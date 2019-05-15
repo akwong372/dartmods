@@ -20,4 +20,8 @@ app.post('/items/:postId/like', (req, res) =>
   routes.addLike(req, res)
 );
 
+app.post('/users/newuser', (req, res) =>
+  routes.createUser(req, res)
+)
+
 module.exports = app;
