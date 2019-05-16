@@ -9,6 +9,7 @@ import Footer from './components/Footer.jsx';
 import UserSubmission from './components/UserSubmission.jsx';
 import CreateEntry from './components/CreateEntry.jsx';
 import AlertBar from './components/AlertBar.jsx';
+import LoginPage from './components/LoginPage.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -18,7 +19,9 @@ class App extends React.Component {
       filteredItems: [],
       alertMessage: '',
       alertStatus: '',
-      sort: ''
+      sort: '',
+      pageView: 'mainView',
+      currentUser: ''
     }
     this.createEntry = this.createEntry.bind(this);
     this.sortByDate = this.sortByDate.bind(this);
@@ -135,6 +138,18 @@ class App extends React.Component {
       });
   }
 
+  loginEnter() {
+    this.setState({
+      pageView: 'loginView'
+    });
+  };
+
+  loginCancel() {
+    this.setState({
+      pageView: 'mainView'
+    });
+  };
+
   componentDidMount() {
     this.getAll();
   };
@@ -180,20 +195,30 @@ class App extends React.Component {
           parts={item.parts}
           tags={item.tags}
           main={item.main}
-          addLike={this.addLike} />
+          addLike={this.addLike}
+          currentUser={this.state.currentUser}/>
       });
     }
 
-    return (<div>
-      <Navbar sortByDate={this.sortByDate} sortByLikes={this.sortByLikes} sortByTags={this.sortByTags} />
-      <h1>Page Title</h1>
-      {alertBar}
-      <CreateEntry createEntry={this.createEntry} />
-      <div className="row">
-        {userSubs}
-      </div>
-      <Footer />
-    </div>);
+    const mainView = (
+      <div>
+        <Navbar sortByDate={this.sortByDate} sortByLikes={this.sortByLikes} sortByTags={this.sortByTags} currentUser={this.state.currentUser}/>
+        <h1>Page Title</h1>
+        {alertBar}
+        <CreateEntry createEntry={this.createEntry} />
+        <div className="row">
+          {userSubs}
+        </div>
+        <Footer />
+      </div>);
+
+    const loginView = (
+      <div>
+        <LoginPage />
+        <Footer />
+      </div>)
+
+    return this.state.pageView === 'mainView' ? mainView : loginView;
   };
 };
 

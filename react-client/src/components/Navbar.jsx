@@ -11,16 +11,19 @@ const Navbar = (props) => (
         </button>
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <div className='nav-item dropdown mr-sm-2 mb-sm-2'>
-            <button className='btn btn-secondary dropdown-toggle nav-link' type='button' id='navbarDropdown' data-toggle='dropdown'>Order By: </button>
+          <div className='nav-item dropdown'>
+            <button className='btn btn-secondary dropdown-toggle nav-link mr-sm-2 mb-sm-2' type='button' id='navbarDropdown' data-toggle='dropdown'>Order By: </button>
             <div className='dropdown-menu' id='navbarDropdownInner'>
               <button className='dropdown-item navbarDropdownItem' type='button' id='dropdownNew' onClick={props.sortByDate}>New</button>
               <button className='dropdown-item navbarDropdownItem' type='button' id='dropdownLikes' onClick={props.sortByLikes}>Likes</button>
             </div>
           </div>
-          <SearchBar sortByTags={props.sortByTags}/>
-          <button type='button' className='btn btn-success mr-sm-2 mb-sm-2' data-toggle="modal" data-target="#createEntryModal">
+          <SearchBar sortByTags={props.sortByTags} />
+          <button type='button' className='btn btn-success mr-sm-2 mb-sm-2' data-toggle="modal" data-target="#createEntryModal" disabled={!props.currentUser}>
             Create
+          </button>
+          <button type="button" class="btn btn-outline-success mr-sm-2 mb-sm-2">
+            Login
           </button>
         </div>
       </div>
