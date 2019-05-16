@@ -54,7 +54,7 @@ class App extends React.Component {
 
   createEntry(e) {
     const createdEntry = {
-      author: 'guest',
+      author: this.state.currentUser,
       title: JSON.stringify(e.target[0].value),
       description: JSON.stringify(e.target[1].value),
       parts: JSON.stringify(e.target[2].value),
