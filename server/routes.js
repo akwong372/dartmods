@@ -18,7 +18,7 @@ const addItem = (req, res) =>
     }
   });
 
-const addLike = (req, res) =>
+const addLike = (req, res) => {
   models.addLike(req.params, (err, data) => {
     if (err) {
       res.sendStatus(500);
@@ -26,6 +26,8 @@ const addLike = (req, res) =>
       res.sendStatus(200);
     }
   });
+}
+
 
 const createUser = (req, res) =>
   models.createUser(req.body, (err, data) => {
@@ -45,5 +47,26 @@ const loginUser = (req, res) =>
       console.log(req.session)
       res.send(data);
     }
-  })
-module.exports = { selectAll, addItem, addLike, createUser, loginUser };
+  });
+
+const logoutUser = (req, res) => {
+  console.log(req.session)
+
+  req.session.destroy((err) => {
+    if (err) {
+      return console.log(err);
+    }
+    console.log(req.session)
+
+    res.redirect('/');
+  });
+}
+
+module.exports = {
+  selectAll,
+  addItem,
+  addLike,
+  createUser,
+  loginUser,
+  logoutUser
+};

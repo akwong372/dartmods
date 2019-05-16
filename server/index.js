@@ -8,11 +8,10 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(session({
   secret: 'somekindofsecret',
-  // genid: req => genuuid(),
   store: new MongoStore({ mongooseConnection: db }),
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true }
+  cookie: { secure: true, maxAge: 600000 }
 }))
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -37,6 +36,10 @@ app.post('/users/newuser', (req, res) =>
 
 app.post('/users/login', (req, res) =>
   routes.loginUser(req, res)
+);
+
+app.get('/users/logout', (req, res) =>
+  routes.logoutUser(req, res)
 );
 
 module.exports = app;
