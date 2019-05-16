@@ -9,6 +9,7 @@ import Footer from './components/Footer.jsx';
 import UserSubmission from './components/UserSubmission.jsx';
 import CreateEntry from './components/CreateEntry.jsx';
 import AlertBar from './components/AlertBar.jsx';
+import LoginPage from './components/LoginPage.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -18,7 +19,9 @@ class App extends React.Component {
       filteredItems: [],
       alertMessage: '',
       alertStatus: '',
-      sort: ''
+      sort: '',
+      pageView: 'mainView',
+      currentUser: ''
     }
     this.createEntry = this.createEntry.bind(this);
     this.sortByDate = this.sortByDate.bind(this);
@@ -26,15 +29,21 @@ class App extends React.Component {
     this.sortByTags = this.sortByTags.bind(this);
     this.alertDismiss = this.alertDismiss.bind(this);
     this.addLike = this.addLike.bind(this);
+    this.loginCancel = this.loginCancel.bind(this);
+    this.loginEnter = this.loginEnter.bind(this);
+    this.loginSubmit = this.loginSubmit.bind(this);
+    this.logoutSubmit = this.logoutSubmit.bind(this);
   }
 
   getAll() {
     axios.get('/items')
       .then((response) => {
         this.setState({
-          items: response.data
+          items: response.data.data,
+          currentUser: response.data.currentUser
         })
       })
+      .then(() => console.log(this.state))
       .catch((err) => {
         console.log('err', err);
       });
@@ -135,6 +144,46 @@ class App extends React.Component {
       });
   }
 
+  loginEnter() {
+    this.setState({
+      pageView: 'loginView'
+    });
+  };
+
+  loginSubmit(e) {
+    const loginInfo = {
+      username: e.target[0].value,
+      password: e.target[1].value
+    }
+    e.target[0].value = '';
+    e.target[1].value = '';
+
+    axios.post('/users/login', loginInfo)
+      .then((response) => {
+        console.log(response.data.username);
+        this.setState({
+          currentUser: response.data.username
+        })
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
+  logoutSubmit() {
+    axios.get('users/logout')
+      .then(() =>
+        this.setState({
+          currentUser: ''
+        }));
+  };
+
+  loginCancel() {
+    this.setState({
+      pageView: 'mainView'
+    });
+  };
+
   componentDidMount() {
     this.getAll();
   };
@@ -147,7 +196,8 @@ class App extends React.Component {
       alertBar = <AlertBar
         status={this.state.alertStatus}
         message={this.state.alertMessage}
-        alertDismiss={this.alertDismiss} />;
+        alertDismiss={this.alertDismiss}
+      />;
     }
 
     if (this.state.sort === 'tags') {
@@ -164,7 +214,8 @@ class App extends React.Component {
           parts={item.parts}
           tags={item.tags}
           main={item.main}
-          addLike={this.addLike} />
+          addLike={this.addLike}
+        />
       });
     } else {
       userSubs = this.state.items.map((item, i) => {
@@ -180,20 +231,38 @@ class App extends React.Component {
           parts={item.parts}
           tags={item.tags}
           main={item.main}
-          addLike={this.addLike} />
+          addLike={this.addLike}
+          currentUser={this.state.currentUser}
+        />
       });
     }
 
-    return (<div>
-      <Navbar sortByDate={this.sortByDate} sortByLikes={this.sortByLikes} sortByTags={this.sortByTags} />
-      <h1>Page Title</h1>
-      {alertBar}
-      <CreateEntry createEntry={this.createEntry} />
-      <div className="row">
-        {userSubs}
-      </div>
-      <Footer />
-    </div>);
+    const mainView = (
+      <div>
+        <Navbar
+          sortByDate={this.sortByDate}
+          sortByLikes={this.sortByLikes}
+          sortByTags={this.sortByTags}
+          currentUser={this.state.currentUser}
+          loginEnter={this.loginEnter}
+          logoutSubmit={this.logoutSubmit}
+        />
+        <h1>Page Title</h1>
+        {alertBar}
+        <CreateEntry createEntry={this.createEntry} />
+        <div className="row container-fluid">
+          {userSubs}
+        </div>
+        <Footer />
+      </div>);
+
+    const loginView = (
+      <div>
+        <LoginPage loginCancel={this.loginCancel} loginSubmit={this.loginSubmit} />
+        <Footer />
+      </div>)
+
+    return this.state.pageView === 'mainView' ? mainView : loginView;
   };
 };
 

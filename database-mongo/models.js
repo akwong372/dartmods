@@ -11,7 +11,14 @@ const itemSchema = mongoose.Schema({
   main: String
 });
 
+const userSchema = mongoose.Schema({
+  username: { type: String, unique: true },
+  password: String,
+  likedIds: { type: Array, default: [] }
+});
+
 const Item = mongoose.model('Item', itemSchema);
+const User = mongoose.model('User', userSchema);
 
 const selectAll = (serverRouteFunc) => {
   Item.find({}, (err, items) => {
@@ -56,13 +63,39 @@ const addItem = (reqData, serverRouteFunc) => {
 };
 
 const addLike = (reqData, serverRouteFunc) => {
-  Item.findByIdAndUpdate(reqData.postId, {$inc: {likes: 1}}, {new: true}, (err, data) => {
+  Item.findByIdAndUpdate(reqData.postId, { $inc: { likes: 1 } }, { new: true }, (err, data) => {
     if (err) {
       serverRouteFunc(err, null);
     } else {
       serverRouteFunc(null, data);
     }
-  })
+  });
+};
+
+const createUser = (reqData, serverRouteFunc) => {
+  User.findOne({ username: reqData.username }, (err, user) => {
+    if (err) {
+      serverRouteFunc(err, null);
+    } else if (user === null) {
+      User.create({ username: reqData.username, password: reqData.password })
+        .then((user) => serverRouteFunc(null, user))
+        .catch((err) => serverRouteFunc(err, null));
+    } else {
+      serverRouteFunc(null, { message: 'Username already exists.' });
+    }
+  });
+};
+
+const loginUser = (reqData, serverRouteFunc) => {
+  User.findOne({ username: reqData.username, password: reqData.password }, (err, user) => {
+    if (err) {
+      serverRouteFunc(err, null);
+    } else if (user === null) {
+      serverRouteFunc(null, { message: 'Username or password is incorrect.' });
+    } else {
+      serverRouteFunc(null, user);
+    }
+  });
 }
 
-module.exports = { selectAll, addItem, addLike };
+module.exports = { selectAll, addItem, addLike, createUser, loginUser };

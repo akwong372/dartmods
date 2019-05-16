@@ -10,7 +10,7 @@ const userSubmissionModal = (props) => (
         </div>
         <div className='container'>
           <div>Likes: {props.likes}
-            <button type='button' onClick={()=>props.addLike(props.postId)}>Click to like</button>
+            <button type='button' onClick={()=>props.addLike(props.postId)} disabled={!props.currentUser}>Click to like</button>
           </div>
           <div>Date: {new Date(Date.parse(props.date)).toDateString()}</div>
         </div>

@@ -38,6 +38,7 @@ const userSubmission = (props) => {
         tags={props.tags}
         main={props.main}
         addLike={props.addLike}
+        currentUser={props.currentUser}
       />
     </div>
   );
