@@ -4,7 +4,7 @@ import SearchBar from './SearchBar.jsx';
 const Navbar = (props) => {
 
   const logoutButton = (
-    <button type="button" className="btn btn-outline-success mr-sm-2 mb-sm-2" onClick={() => props.loginEnter()}>
+    <button type="button" className="btn btn-outline-success mr-sm-2 mb-sm-2" onClick={() => props.logoutSubmit()}>
       Logout
 </button>
   );

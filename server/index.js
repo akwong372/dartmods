@@ -8,10 +8,10 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(session({
   secret: 'somekindofsecret',
-  store: new MongoStore({ mongooseConnection: db }),
+  store: new MongoStore({ mongooseConnection: db}),
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true, maxAge: 600000 }
+  cookie: { secure: false, maxAge: 600000 }
 }))
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

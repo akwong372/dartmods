@@ -31,15 +31,19 @@ class App extends React.Component {
     this.addLike = this.addLike.bind(this);
     this.loginCancel = this.loginCancel.bind(this);
     this.loginEnter = this.loginEnter.bind(this);
+    this.loginSubmit = this.loginSubmit.bind(this);
+    this.logoutSubmit = this.logoutSubmit.bind(this);
   }
 
   getAll() {
     axios.get('/items')
       .then((response) => {
         this.setState({
-          items: response.data
+          items: response.data.data,
+          currentUser: response.data.currentUser
         })
       })
+      .then(() => console.log(this.state))
       .catch((err) => {
         console.log('err', err);
       });
@@ -146,6 +150,34 @@ class App extends React.Component {
     });
   };
 
+  loginSubmit(e) {
+    const loginInfo = {
+      username: e.target[0].value,
+      password: e.target[1].value
+    }
+    e.target[0].value = '';
+    e.target[1].value = '';
+
+    axios.post('/users/login', loginInfo)
+      .then((response) => {
+        console.log(response.data.username);
+        this.setState({
+          currentUser: response.data.username
+        })
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
+  logoutSubmit() {
+    axios.get('users/logout')
+      .then(() =>
+        this.setState({
+          currentUser: ''
+        }));
+  };
+
   loginCancel() {
     this.setState({
       pageView: 'mainView'
@@ -213,6 +245,7 @@ class App extends React.Component {
           sortByTags={this.sortByTags}
           currentUser={this.state.currentUser}
           loginEnter={this.loginEnter}
+          logoutSubmit={this.logoutSubmit}
         />
         <h1>Page Title</h1>
         {alertBar}
@@ -225,7 +258,7 @@ class App extends React.Component {
 
     const loginView = (
       <div>
-        <LoginPage loginCancel={this.loginCancel} />
+        <LoginPage loginCancel={this.loginCancel} loginSubmit={this.loginSubmit} />
         <Footer />
       </div>)
 

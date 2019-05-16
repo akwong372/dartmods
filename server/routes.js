@@ -5,7 +5,11 @@ const selectAll = (req, res) =>
     if (err) {
       res.sendStatus(500);
     } else {
-      res.json(data);
+      const pageData = {
+        data,
+        currentUser: req.session.username
+      }
+      res.send(pageData);
     }
   });
 
@@ -43,22 +47,17 @@ const loginUser = (req, res) =>
     if (err) {
       res.sendStatus(500);
     } else {
-      req.session.username = data.username;
-      console.log(req.session)
-      res.send(data);
+        req.session.username = data.username;
+        res.send(data);
     }
   });
 
 const logoutUser = (req, res) => {
-  console.log(req.session)
-
   req.session.destroy((err) => {
     if (err) {
       return console.log(err);
     }
-    console.log(req.session)
-
-    res.redirect('/');
+    res.send('Logged out')
   });
 }
 
