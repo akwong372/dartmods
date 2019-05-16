@@ -11,7 +11,7 @@ const loginPage = (props) => (
         <input type="text" id='passwordLogin' placeholder='password' size='25' required />
       </div>
       <div className="submissionButtonContainer">
-        <button type="button" className="btn btn-secondary mx-sm-1">Cancel</button>
+        <button type="button" className="btn btn-secondary mx-sm-1" onClick={() => props.loginCancel()}>Cancel</button>
         <button type="submit" className='btn btn-success mx-sm-1'>Submit</button>
       </div>
     </form>

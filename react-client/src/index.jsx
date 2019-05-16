@@ -29,6 +29,8 @@ class App extends React.Component {
     this.sortByTags = this.sortByTags.bind(this);
     this.alertDismiss = this.alertDismiss.bind(this);
     this.addLike = this.addLike.bind(this);
+    this.loginCancel = this.loginCancel.bind(this);
+    this.loginEnter = this.loginEnter.bind(this);
   }
 
   getAll() {
@@ -162,7 +164,8 @@ class App extends React.Component {
       alertBar = <AlertBar
         status={this.state.alertStatus}
         message={this.state.alertMessage}
-        alertDismiss={this.alertDismiss} />;
+        alertDismiss={this.alertDismiss}
+      />;
     }
 
     if (this.state.sort === 'tags') {
@@ -179,7 +182,8 @@ class App extends React.Component {
           parts={item.parts}
           tags={item.tags}
           main={item.main}
-          addLike={this.addLike} />
+          addLike={this.addLike}
+        />
       });
     } else {
       userSubs = this.state.items.map((item, i) => {
@@ -196,17 +200,24 @@ class App extends React.Component {
           tags={item.tags}
           main={item.main}
           addLike={this.addLike}
-          currentUser={this.state.currentUser}/>
+          currentUser={this.state.currentUser}
+        />
       });
     }
 
     const mainView = (
       <div>
-        <Navbar sortByDate={this.sortByDate} sortByLikes={this.sortByLikes} sortByTags={this.sortByTags} currentUser={this.state.currentUser}/>
+        <Navbar
+          sortByDate={this.sortByDate}
+          sortByLikes={this.sortByLikes}
+          sortByTags={this.sortByTags}
+          currentUser={this.state.currentUser}
+          loginEnter={this.loginEnter}
+        />
         <h1>Page Title</h1>
         {alertBar}
         <CreateEntry createEntry={this.createEntry} />
-        <div className="row">
+        <div className="row container-fluid">
           {userSubs}
         </div>
         <Footer />
@@ -214,7 +225,7 @@ class App extends React.Component {
 
     const loginView = (
       <div>
-        <LoginPage />
+        <LoginPage loginCancel={this.loginCancel} />
         <Footer />
       </div>)
 
