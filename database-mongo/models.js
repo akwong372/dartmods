@@ -1,4 +1,6 @@
 const { db, mongoose } = require('./index.js');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 const itemSchema = mongoose.Schema({
   author: String,
@@ -77,9 +79,18 @@ const createUser = (reqData, serverRouteFunc) => {
     if (err) {
       serverRouteFunc(err, null);
     } else if (user === null) {
-      User.create({ username: reqData.username, password: reqData.password })
-        .then((user) => serverRouteFunc(null, user))
-        .catch((err) => serverRouteFunc(err, null));
+      bcrypt.genSalt(saltRounds, (err, salt) => {
+        bcrypt.hash(reqData.password, salt, (err, hash) => {
+          if (err) {
+            console.log(err);
+          } else {
+            User.create({ username: reqData.username, password: hash })
+              .then((user) => serverRouteFunc(null, user))
+              .catch((err) => serverRouteFunc(err, null));
+          }
+        })
+      })
+
     } else {
       serverRouteFunc(null, { message: 'Username already exists.' });
     }
@@ -87,15 +98,30 @@ const createUser = (reqData, serverRouteFunc) => {
 };
 
 const loginUser = (reqData, serverRouteFunc) => {
-  User.findOne({ username: reqData.username, password: reqData.password }, (err, user) => {
+  User.findOne({ username: reqData.username }, (err, user) => {
     if (err) {
       serverRouteFunc(err, null);
     } else if (user === null) {
       serverRouteFunc(null, { message: 'Username or password is incorrect.' });
     } else {
-      serverRouteFunc(null, user);
+      bcrypt.genSalt(saltRounds, (err, salt) => {
+        bcrypt.hash(reqData.password, salt, (err, hash) => {
+          if (err) {
+            console.log(err);
+          } else {
+            bcrypt.compare(reqData.password, hash, (err, res) => {
+              if (res === true) {
+                serverRouteFunc(null, user);
+              } else {
+                serverRouteFunc(null, { message: 'Username or password is incorrect.' });
+              }
+            });
+          }
+        });
+      });
     }
   });
+
 }
 
 module.exports = { selectAll, addItem, addLike, createUser, loginUser };
