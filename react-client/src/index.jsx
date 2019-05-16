@@ -2,7 +2,6 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
 import axios from 'axios';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
@@ -43,7 +42,9 @@ class App extends React.Component {
       .then((response) => {
         this.setState({
           items: response.data.data,
-          currentUser: response.data.currentUser
+          currentUser: response.data.currentUser,
+          alertMessage: response.data.alertMessage,
+          alertStatus: response.data.alertStatus,
         })
       })
       .then(() => console.log(this.state))
@@ -183,7 +184,8 @@ class App extends React.Component {
 
   loginCancel() {
     this.setState({
-      pageView: 'mainView'
+      pageView: 'mainView',
+      loginMode: 0
     });
   };
 
@@ -204,7 +206,7 @@ class App extends React.Component {
 
       axios.post('/users/newuser', loginInfo)
         .then((response) => {
-          console.log(response);
+          console.log(response)
           this.setState({
             currentUser: response.data.username
           })
