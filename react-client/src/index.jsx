@@ -21,7 +21,8 @@ class App extends React.Component {
       alertStatus: '',
       sort: '',
       pageView: 'mainView',
-      currentUser: ''
+      currentUser: '',
+      loginMode: 0
     }
     this.createEntry = this.createEntry.bind(this);
     this.sortByDate = this.sortByDate.bind(this);
@@ -32,6 +33,8 @@ class App extends React.Component {
     this.loginCancel = this.loginCancel.bind(this);
     this.loginEnter = this.loginEnter.bind(this);
     this.loginSubmit = this.loginSubmit.bind(this);
+    this.loginCreate = this.loginCreate.bind(this);
+    this.loginToggle = this.loginToggle.bind(this);
     this.logoutSubmit = this.logoutSubmit.bind(this);
   }
 
@@ -167,8 +170,8 @@ class App extends React.Component {
       })
       .catch((err) => {
         console.log(err);
-      })
-  }
+      });
+  };
 
   logoutSubmit() {
     axios.get('users/logout')
@@ -183,6 +186,40 @@ class App extends React.Component {
       pageView: 'mainView'
     });
   };
+
+  loginToggle() {
+    let loginMode = this.state.loginMode === 1 ? 0 : 1;
+    this.setState({
+      loginMode: loginMode
+    })
+  }
+
+  loginCreate(e) {
+    if (e.target[1].value === e.target[2].value) {
+
+      const loginInfo = {
+        username: e.target[0].value,
+        password: e.target[1].value
+      }
+
+      axios.post('/users/newuser', loginInfo)
+        .then((response) => {
+          console.log(response);
+          this.setState({
+            currentUser: response.data.username
+          })
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      e.preventDefault();
+      this.setState({
+        alertMessage: 'Entered passwords do not match.',
+        alertStatus: 'warning'
+      });
+    }
+  }
 
   componentDidMount() {
     this.getAll();
@@ -258,7 +295,14 @@ class App extends React.Component {
 
     const loginView = (
       <div>
-        <LoginPage loginCancel={this.loginCancel} loginSubmit={this.loginSubmit} />
+        {alertBar}
+        <LoginPage
+          loginCancel={this.loginCancel}
+          loginSubmit={this.loginSubmit}
+          loginToggle={this.loginToggle}
+          loginMode={this.state.loginMode}
+          loginCreate={this.loginCreate}
+        />
         <Footer />
       </div>)
 
