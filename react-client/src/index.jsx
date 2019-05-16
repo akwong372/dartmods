@@ -47,7 +47,6 @@ class App extends React.Component {
           alertStatus: response.data.alertStatus,
         })
       })
-      .then(() => console.log(this.state))
       .catch((err) => {
         console.log('err', err);
       });
@@ -164,7 +163,6 @@ class App extends React.Component {
 
     axios.post('/users/login', loginInfo)
       .then((response) => {
-        console.log(response.data.username);
         this.setState({
           currentUser: response.data.username
         })
@@ -286,7 +284,6 @@ class App extends React.Component {
           loginEnter={this.loginEnter}
           logoutSubmit={this.logoutSubmit}
         />
-        <h1>Page Title</h1>
         {alertBar}
         <CreateEntry createEntry={this.createEntry} />
         <div className="row container-fluid">
