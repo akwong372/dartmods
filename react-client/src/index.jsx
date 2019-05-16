@@ -2,7 +2,6 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
 import axios from 'axios';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
@@ -21,7 +20,8 @@ class App extends React.Component {
       alertStatus: '',
       sort: '',
       pageView: 'mainView',
-      currentUser: ''
+      currentUser: '',
+      loginMode: 0
     }
     this.createEntry = this.createEntry.bind(this);
     this.sortByDate = this.sortByDate.bind(this);
@@ -32,6 +32,8 @@ class App extends React.Component {
     this.loginCancel = this.loginCancel.bind(this);
     this.loginEnter = this.loginEnter.bind(this);
     this.loginSubmit = this.loginSubmit.bind(this);
+    this.loginCreate = this.loginCreate.bind(this);
+    this.loginToggle = this.loginToggle.bind(this);
     this.logoutSubmit = this.logoutSubmit.bind(this);
   }
 
@@ -40,7 +42,9 @@ class App extends React.Component {
       .then((response) => {
         this.setState({
           items: response.data.data,
-          currentUser: response.data.currentUser
+          currentUser: response.data.currentUser,
+          alertMessage: response.data.alertMessage,
+          alertStatus: response.data.alertStatus,
         })
       })
       .then(() => console.log(this.state))
@@ -167,8 +171,8 @@ class App extends React.Component {
       })
       .catch((err) => {
         console.log(err);
-      })
-  }
+      });
+  };
 
   logoutSubmit() {
     axios.get('users/logout')
@@ -180,9 +184,44 @@ class App extends React.Component {
 
   loginCancel() {
     this.setState({
-      pageView: 'mainView'
+      pageView: 'mainView',
+      loginMode: 0
     });
   };
+
+  loginToggle() {
+    let loginMode = this.state.loginMode === 1 ? 0 : 1;
+    this.setState({
+      loginMode: loginMode
+    })
+  }
+
+  loginCreate(e) {
+    if (e.target[1].value === e.target[2].value) {
+
+      const loginInfo = {
+        username: e.target[0].value,
+        password: e.target[1].value
+      }
+
+      axios.post('/users/newuser', loginInfo)
+        .then((response) => {
+          console.log(response)
+          this.setState({
+            currentUser: response.data.username
+          })
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      e.preventDefault();
+      this.setState({
+        alertMessage: 'Entered passwords do not match.',
+        alertStatus: 'warning'
+      });
+    }
+  }
 
   componentDidMount() {
     this.getAll();
@@ -258,7 +297,14 @@ class App extends React.Component {
 
     const loginView = (
       <div>
-        <LoginPage loginCancel={this.loginCancel} loginSubmit={this.loginSubmit} />
+        {alertBar}
+        <LoginPage
+          loginCancel={this.loginCancel}
+          loginSubmit={this.loginSubmit}
+          loginToggle={this.loginToggle}
+          loginMode={this.state.loginMode}
+          loginCreate={this.loginCreate}
+        />
         <Footer />
       </div>)
 

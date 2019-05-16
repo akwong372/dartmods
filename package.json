@@ -5,6 +5,7 @@
   "main": "server/server.js",
   "scripts": {
     "react-dev": "webpack -d --watch",
+    "build": "webpack -p",
     "start": "nodemon server/server.js",
     "test": "jest"
   },

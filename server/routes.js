@@ -7,7 +7,9 @@ const selectAll = (req, res) =>
     } else {
       const pageData = {
         data,
-        currentUser: req.session.username
+        currentUser: req.session.username,
+        alertMessage: req.session.alertMessage || '',
+        alertStatus: req.session.alertStatus || ''
       }
       res.send(pageData);
     }
@@ -32,12 +34,16 @@ const addLike = (req, res) => {
   });
 }
 
-
 const createUser = (req, res) =>
   models.createUser(req.body, (err, data) => {
     if (err) {
       res.sendStatus(500);
     } else {
+      if (!data.message) {
+        req.session.alertMessage = 'Successfully logged in.';
+        req.session.alertStatus = 'success';
+      }
+      req.session.username = data.username;
       res.send(data);
     }
   });
@@ -47,8 +53,12 @@ const loginUser = (req, res) =>
     if (err) {
       res.sendStatus(500);
     } else {
-        req.session.username = data.username;
-        res.send(data);
+      if (!data.message) {
+        req.session.alertMessage = 'Successfully logged in.';
+        req.session.alertStatus = 'success';
+      }
+      req.session.username = data.username;
+      res.send(data);
     }
   });
 
