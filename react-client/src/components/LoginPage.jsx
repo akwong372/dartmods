@@ -10,7 +10,7 @@ const loginPage = (props) => {
           <input type="text" id='usernameLogin' placeholder='username' size='25' required />
         </div>
         <div className="formElement">
-          <input type="text" id='passwordLogin' placeholder='password' size='25' required />
+          <input type="password" id='passwordLogin' placeholder='current-password' size='25' autoComplete='password' required />
         </div>
         <div className="submissionButtonContainer">
           <button type="button" className="btn btn-secondary mx-sm-1" onClick={() => props.loginCancel()}>Cancel</button>
@@ -30,10 +30,10 @@ const loginPage = (props) => {
           <input type="text" id='usernameCreate' placeholder='username' size='25' required />
         </div>
         <div className="formElement">
-          <input type="text" id='passwordCreate' placeholder='password' size='25' required />
+          <input type="password" id='passwordCreate' placeholder='password' autoComplete='new-password' size='25' required />
         </div>
         <div className="formElement">
-          <input type="text" id='passwordCreateConfirm' placeholder='retype password' size='25' required />
+          <input type="password" id='passwordCreateConfirm' placeholder='retype password' size='25' autoComplete='new-password' required />
         </div>
         <div className="submissionButtonContainer">
           <button type="button" className="btn btn-secondary mx-sm-1" onClick={() => props.loginCancel()}>Cancel</button>
