@@ -42,9 +42,7 @@ class App extends React.Component {
       .then((response) => {
         this.setState({
           items: response.data.data,
-          currentUser: response.data.currentUser,
-          alertMessage: response.data.alertMessage,
-          alertStatus: response.data.alertStatus,
+          currentUser: response.data.currentUser
         })
       })
       .catch((err) => {
@@ -283,6 +281,7 @@ class App extends React.Component {
           currentUser={this.state.currentUser}
           loginEnter={this.loginEnter}
           logoutSubmit={this.logoutSubmit}
+          currentUser={this.state.currentUser}
         />
         {alertBar}
         <CreateEntry createEntry={this.createEntry} />

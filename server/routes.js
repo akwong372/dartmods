@@ -7,9 +7,7 @@ const selectAll = (req, res) =>
     } else {
       const pageData = {
         data,
-        currentUser: req.session.username,
-        alertMessage: req.session.alertMessage || '',
-        alertStatus: req.session.alertStatus || ''
+        currentUser: req.session.username
       }
       res.send(pageData);
     }
@@ -39,10 +37,6 @@ const createUser = (req, res) =>
     if (err) {
       res.sendStatus(500);
     } else {
-      if (!data.message) {
-        req.session.alertMessage = 'Successfully logged in.';
-        req.session.alertStatus = 'success';
-      }
       req.session.username = data.username;
       res.send(data);
     }
@@ -53,10 +47,6 @@ const loginUser = (req, res) =>
     if (err) {
       res.sendStatus(500);
     } else {
-      if (!data.message) {
-        req.session.alertMessage = 'Successfully logged in.';
-        req.session.alertStatus = 'success';
-      }
       req.session.username = data.username;
       res.send(data);
     }

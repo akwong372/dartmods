@@ -4,9 +4,12 @@ import SearchBar from './SearchBar.jsx';
 const Navbar = (props) => {
 
   const logoutButton = (
-    <button type="button" className="btn btn-outline-success mr-sm-2 mb-sm-2" onClick={() => props.logoutSubmit()}>
-      Logout
-</button>
+    <div className='nav-item dropdown'>
+      <button className='btn btn-outline-success dropdown-toggle nav-link mr-sm-2 mb-sm-2' type='button' id='navbarDropdown' data-toggle='dropdown'> {props.currentUser} </button>
+      <div className='dropdown-menu' id='navbarDropdownInner'>
+        <button type="button" className="dropdown-item navbarDropdownItem" onClick={() => props.logoutSubmit()}>Logout</button>
+      </div>
+    </div>
   );
 
   const loginButton = (
