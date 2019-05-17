@@ -10,7 +10,7 @@ const loginPage = (props) => {
           <input type="text" id='usernameLogin' placeholder='username' size='25' required />
         </div>
         <div className="formElement">
-          <input type="password" id='passwordLogin' placeholder='current-password' size='25' autoComplete='password' required />
+          <input type="password" id='passwordLogin' placeholder='password' size='25' autoComplete='current-password' required />
         </div>
         <div className="submissionButtonContainer">
           <button type="button" className="btn btn-secondary mx-sm-1" onClick={() => props.loginCancel()}>Cancel</button>

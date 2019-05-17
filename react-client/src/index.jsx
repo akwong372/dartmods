@@ -35,6 +35,7 @@ class App extends React.Component {
     this.loginCreate = this.loginCreate.bind(this);
     this.loginToggle = this.loginToggle.bind(this);
     this.logoutSubmit = this.logoutSubmit.bind(this);
+    this.resetAlert = this.resetAlert.bind(this);
   }
 
   getAll() {
@@ -145,11 +146,36 @@ class App extends React.Component {
       });
   }
 
+  resetAlert() {
+    if (this.state.alertMessage !== '') {
+      this.setState({
+        alertStatus: '',
+        alertMessage: ''
+      })
+    }
+  }
+
   loginEnter() {
+    this.resetAlert();
     this.setState({
       pageView: 'loginView'
     });
   };
+
+  loginCancel() {
+    this.resetAlert();
+    this.setState({
+      pageView: 'mainView',
+      loginMode: 0
+    });
+  };
+
+  loginToggle() {
+    let loginMode = this.state.loginMode === 1 ? 0 : 1;
+    this.setState({
+      loginMode: loginMode
+    })
+  }
 
   loginSubmit(e) {
     const loginInfo = {
@@ -177,20 +203,6 @@ class App extends React.Component {
           currentUser: ''
         }));
   };
-
-  loginCancel() {
-    this.setState({
-      pageView: 'mainView',
-      loginMode: 0
-    });
-  };
-
-  loginToggle() {
-    let loginMode = this.state.loginMode === 1 ? 0 : 1;
-    this.setState({
-      loginMode: loginMode
-    })
-  }
 
   loginCreate(e) {
     if (e.target[1].value === e.target[2].value) {
